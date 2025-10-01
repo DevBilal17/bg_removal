@@ -1,0 +1,24 @@
+import React from 'react'
+import { Route, Routes } from 'react-router-dom'
+import Home from './pages/Home'
+import Result from './pages/Result'
+import Credit from './pages/Credit'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
+
+const App = () => {
+  return (
+    <div className='bg-slate-100' >
+      
+      <Navbar/>
+      <Routes>
+         <Route path='/' element={<Home/>} />
+         <Route path='/result' element={<Result/>} />
+         <Route path='/buy' element={<Credit/>} />
+      </Routes>
+      <Footer/>
+    </div>
+  )
+}
+
+export default App
