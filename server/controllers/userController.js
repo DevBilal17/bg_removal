@@ -1,5 +1,5 @@
 import { Webhook } from "svix"
-import { USER } from "../models/userModel"
+import { USER } from "../models/userModel.js"
 
 
 // api/user/webhooks
