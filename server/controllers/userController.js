@@ -1,4 +1,5 @@
 import { Webhook } from "svix"
+import { USER } from "../models/userModel"
 
 
 // api/user/webhooks
@@ -18,17 +19,40 @@ export const clerkWebHooks = async (req,res)=>{
         switch (type){
             case "user.created": {
            
-                console.log(data)
+                const user = {
+                    clerkId : data.id,
+                    email : data.email_addresses[0].email_address,
+                    photo : data.image_url,
+                    firstName : data.first_name,
+                    lastName : data.last_name
+                }
+
+                await USER.create(user);
+                res.json({})
+                
                 break;
             }
 
             case "user.updated": {
-           
+           const user = {
+                    
+                    email : data.email_addresses[0].email_address,
+                    photo : data.image_url,
+                    firstName : data.first_name,
+                    lastName : data.last_name
+                }
+
+                await USER.findOneAndUpdate({clerkId : data.id},user)
+
+                res.json({})
                 break;
             }
 
             case "user.deleted": {
            
+                await USER.findOneAndDelete({clerkId : data.id})
+
+                res.json({})
                 break;
             }
 
@@ -37,6 +61,10 @@ export const clerkWebHooks = async (req,res)=>{
                 break;
         }
     } catch (error) {
-        
+        console.log(error.message)
+        res.json({
+            success: false,
+            message : error.message
+        })
     }
 }
