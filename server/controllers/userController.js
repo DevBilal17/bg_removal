@@ -8,14 +8,17 @@ import { USER } from "../models/userModel.js"
 export const clerkWebHooks = async (req,res)=>{
     try {
         const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET)
+         // ✅ raw buffer → string
+    const payload = req.body instanceof Buffer ? req.body.toString("utf8") : req.body;
 
-        await whook.verify(JSON.stringify(req.body),{
-            "svix-id":req.headers["svix-id"],
-            "svix-signature":req.headers["svix-signature"],
-            "svix-timestamp":req.headers["svix-timestamp"]
-        })
+    const headers = {
+      "svix-id": req.headers["svix-id"],
+      "svix-signature": req.headers["svix-signature"],
+      "svix-timestamp": req.headers["svix-timestamp"],
+    };
+        const {data,type} = wh.verify(payload, headers);
 
-        const {data,type} = req.body
+        // const {data,type} = req.body
         switch (type){
             case "user.created": {
            
